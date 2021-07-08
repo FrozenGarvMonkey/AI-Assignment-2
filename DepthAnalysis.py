@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.tree import plot_tree
+import random
 
 # Data files
 heart = pd.read_csv("Data/heart.csv")
@@ -41,7 +42,7 @@ for marker in markers:
     train_accuracy = []
     depth_used = []
     train_data, test_data, train_result, test_result = train_test_split(
-        datas, results, test_size=0.2, random_state=True
+        datas, results, test_size=0.2, random_state=None, shuffle=True
     )
     for depth in max_depths:
         classifier = DecisionTreeClassifier(
