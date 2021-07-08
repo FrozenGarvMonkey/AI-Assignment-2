@@ -32,8 +32,6 @@ ax3.set_ylim(0, 10)
 ax3.set_xlabel("Max Depth")
 ax3.set_ylabel("Actual Depth")
 
-fig4 = plt.figure(figsize=(22, 10))
-
 markers = ["o", "*", "s", "^"]
 labels = ["Test 1", "Test 2", "Test 3", "Test 4"]
 max_depths = [x for x in range(1, 41)]
@@ -67,10 +65,8 @@ for marker in markers:
 ax1.scatter(7, train_accuracy[6], s=200, facecolors="none", edgecolors="r")
 ax3.scatter(7, depth_used[6], s=200, facecolors="none", edgecolors="r")
 
-plot_tree(classifier, filled=True, rounded=True, fontsize=5)
 fig1.savefig("Train Accuracy over Max Depth.png")
 fig2.savefig("Test Accuracy over Max Depth.png")
 fig3.savefig("Actual Depth over Max Depth.png")
-fig4.savefig("Decision Tree.png")
 
 plt.show()
