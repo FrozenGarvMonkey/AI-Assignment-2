@@ -55,7 +55,6 @@ for marker in markers:
     plt.subplot(1, 3, 2)
     plt.plot(depth_used, marker=marker)
     plt.subplot(1, 3, 3)
-    plt.plot(, marker=marker)
 
 plt.savefig("graph.png", bbox_inches="tight")
 plt.show()
