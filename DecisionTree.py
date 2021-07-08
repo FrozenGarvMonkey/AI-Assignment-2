@@ -2,42 +2,46 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.tree import plot_tree
+
 
 # Data files
-heart = pd.read_csv("input/heart.csv")
-heart_d = heart.copy()
-print(heart_d.shape)
-heart_d.drop_duplicates(inplace=True)
-heart_d.reset_index(drop=True, inplace=True)
-heart_d.shape
-print(heart_d.shape)
+heart = pd.read_csv("Data/heart.csv")
 
 # Splitting Dependant and Independant variables
-results = heart_d["output"]
-datas = heart_d.drop(["output", "oldpeak", "slp"], inplace=False, axis=1)
+results = heart["output"]
+datas = heart.drop(["output", "oldpeak", "slp"], inplace=False, axis=1)
 
 # Initializing Chart
 plt.figure()
-plt.subplot(1, 2, 1)
-plt.title("Depth comparison")
-plt.xticks([i for i in range(1, 41)])
+plt.subplot(1, 3, 1)
+plt.title("Depth - Test Accuracy")
+plt.xlim(0, 40)
+plt.ylim(0, 1)
 plt.xlabel("Depth")
 plt.ylabel("Accuracy")
 
-plt.subplot(1, 2, 2)
-plt.title("Depth comparison")
-plt.xticks([i for i in range(1, 41)])
+plt.subplot(1, 3, 2)
+plt.title("Max Depth - Actual Depth")
+plt.xlim(0, 40)
+plt.ylim(0, 40)
 plt.xlabel("Max Depth")
 plt.ylabel("Actual Depth")
+
+plt.subplot(1, 3, 3)
+plt.title("Depth - Train Accuracy")
+plt.xlim(0, 40)
+plt.ylim(0, 1)
+plt.xlabel("Depth")
+plt.ylabel("Accuracy")
 
 markers = ["o", "*", ".", "s", "^"]
 
 for marker in markers:
-    accuracy = []
+    test_accuracy = []
+    train_accuracy = []
     depth_used = []
     train_data, test_data, train_result, test_result = train_test_split(
-        datas, results, test_size=0.2, random_state=25
+        datas, results, test_size=0.2, random_state=True
     )
     for depth in range(1, 41):
         classifier = DecisionTreeClassifier(
@@ -45,16 +49,15 @@ for marker in markers:
         )
         classifier.fit(train_data, train_result)
         prediction = classifier.predict(test_data)
-
-        accuracy.append(classifier.score(test_data, test_result))
+        test_accuracy.append(classifier.score(test_data, test_result))
         depth_used.append(classifier.get_depth())
-        print(classifier.get_n_leaves())
+        train_accuracy.append(classifier.score(train_data, train_result))
 
     plt.subplot(1, 3, 1)
-    plt.plot(accuracy, marker=marker)
+    plt.plot(test_accuracy, marker=marker)
     plt.subplot(1, 3, 2)
     plt.plot(depth_used, marker=marker)
     plt.subplot(1, 3, 3)
+    plt.plot(train_accuracy, marker=marker)
 
-plt.savefig("graph.png", bbox_inches="tight")
 plt.show()
